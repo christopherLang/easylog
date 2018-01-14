@@ -265,6 +265,22 @@ class Easylog:
         self._add_logger(log_handler, log_controls)
 
     def set_logformat(self, handlername, fmt, dateformat=None):
+        """Change a handler's log format
+
+        Change the logging format for a handler's output statements
+
+        Arguements:
+            handlername : str
+                The name of the handler. See the property `handlernames` to
+                find out the names of created handlers
+            fmt : str
+                The new log format for the handler. The same format as defined
+                in Python's `logging` module
+            dateformat : str (default `None`)
+                The new date format for the handler. The same as used in the
+                `datetime` module. If `None` than the date format is not
+                changed
+        """
         if self._handlers:
             errmsg = "No Logging Handlers have been defined"
             raise NoDefinedHandlersError(errmsg)
