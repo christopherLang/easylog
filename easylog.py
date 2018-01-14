@@ -308,18 +308,85 @@ class Easylog:
         return result
 
     def log_critical(self, msg):
+        """Log a message as critical
+
+        Critical is the most severe log message, often used when an error is
+        encountered that terminates the program/software
+
+        Handlers set to 'critical' log level will log the following messages:
+        'critical' only
+
+        Arguments:
+            msg : str
+                The message to be logged
+        """
         self._logger.critical(msg)
 
     def log_error(self, msg):
+        """Log a message as error
+
+        Error is the second most severe log message, often used when an
+        error is encountered but does not terminate the program/software.
+        However, the results (e.g. data processing) is likely incorrect and is
+        recommended that the developer check the log
+
+        Handlers set to 'error' log level will log the following messages:
+        'error', 'critical'
+
+        Arguments:
+            msg : str
+                The message to be logged
+        """
         self._logger.error(msg)
 
     def log_warning(self, msg):
+        """Log a message as warning
+
+        Warning is the third most severe log message, often used when a warning
+        is encountered (e.g. module developed for version 3.x.x when you're
+        using 2.x). This would not terminate the program, but the results
+        (e.g. data processing) might be incorrect
+
+        Handlers set to 'warning' log level will log the following messages:
+        'warning', 'error', 'critical'
+
+        Arguments:
+            msg : str
+                The message to be logged
+        """
         self._logger.warning(msg)
 
     def log_info(self, msg):
+        """Log a message as info
+
+        Info is the basic type of log messages e.g. logging useful information
+        at runtime, such as count of something. This is a 'safe' message, and
+        does not indicate that the program has encountered a problem
+
+        Handlers set to 'info' log level will log the following messages:
+        'info', 'warning', 'error', 'critical'
+
+        Arguments:
+            msg : str
+                The message to be logged
+        """
         self._logger.info(msg)
 
     def log_debug(self, msg):
+        """Log a message as debug
+
+        Debug is typically used when the program is set in some kind of
+        'debug mode'. Messages logged at the 'debug' level would generally
+        be highly detailed, exposing the inner working of the program for
+        debugging purposes
+
+        Handlers set to 'debug' log level will log the following messages:
+        'debug', 'info', 'warning', 'error', 'critical'
+
+        Arguments:
+            msg : str
+                The message to be logged
+        """
         self._logger.debug(msg)
 
 
