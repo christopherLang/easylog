@@ -176,6 +176,35 @@ class Easylog:
 
     def add_consolelogger(self, logname=None, loglevel=None, logformat=None,
                           stream=None, dateformat=None):
+        """ Add a console logger
+
+        Print log statements in console, when using default settings. If
+        parameter `stream` is used, this is directly passed to
+        `logging.StreamHandler`
+
+        This is a thin wrapper around `logging.StreamHandler`. Though the
+        method refers to console logging, values pass to `stream` will affect
+        the logging output as `logging.StreamHandler`
+
+        Arguements:
+            logname : str (default `None`)
+                The name of the handler. If `None`, a name is automatically
+                assigned as `console`, plus a counter e.g. `console0`
+            loglevel : str (default `None`)
+                The log level of the handler. Lowercase names of `logging` log
+                levels i.e. 'info', 'critical', etc. If `None, it is set to
+                the global log level. See `Easylog.globallevel`
+            logformat : str (default `None`)
+                The log format for the handler. The same format as defined in
+                Python's `logging` module. If `None`, sets internal defaults
+            dateformat : str (default `None`)
+                The date format for the handler. The same as used in the
+                `datetime` module. If `None`, sets internal defaults
+            stream
+                The values to be passed to `stream` is the same as
+                `logging.StreamHandler`. If `None`, than log statements will be
+                sent to `sys.stderr`, often the console
+        """
         log_controls = self._log_controls('console', logname, loglevel,
                                           logformat, dateformat)
         log_handler = logging.StreamHandler(stream=stream)
