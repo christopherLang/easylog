@@ -18,20 +18,37 @@ class Easylog:
     and similar to file logging, can have multiple loggers for varying purposes
 
     Example:
-        Easylog, by default, creates a console logger named console0, and sets
-        the default global logging level to 'info'::
+        Easylog, by default, creates a console logger named `console0`, and
+        sets the default global logging level to 'info'::
 
             >>> import easylog
             >>> mylogger = easylog.Easylog()
             >>> mylogger.log_info("This is a test")
             INFO - This is a test
 
+        Multiple console and file loggers are supported. For example, say two
+        different console loggers with different log levels
+
+            >>> mylogger = easylog.Easylog(create_console=False)
+            >>> mylogger.add_consolelogger(loglevel='error')
+            >>> mylogger.add_consolelogger(loglevel='critical')
+            >>> mylogger.log_critical("This is a critical message")
+            CRITICAL - This is a critical message
+            CRITICAL - This is a critical message
+            >>> mylogger.log_error('This is an error message')
+            ERROR - This is an error message
+
+        FYI, there are two critical messages above because one of the console
+        loggers has a log level of `error`, which is a lower severity than
+        `critical`
+
     Log levels:
         Log levels in `Easylog` are the same ones defined in `logging`. They're
         integers that define the severity of the log message. A logger's log
         level determines which message they'll receive and process
 
-        Check the README for a detailed description
+        Check the README for a detailed description if you do not understand
+        how Python's `logging` log levels work
 
     Default Settings:
         Easylog has several built-in default settings to get logging up and
@@ -111,6 +128,8 @@ class Easylog:
 
         if loglevel is None:
             loglevel = self._globallevel
+        else:
+            loglevel = _string2loglevel(loglevel)
 
         if logformat is None:
             logformat = _default_log_format(logtype)
