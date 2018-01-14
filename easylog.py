@@ -127,6 +127,10 @@ class Easylog:
 
     @handlernames.getter
     def handlernames(self):
+        """Names assigned to logging handlers
+
+        list of str: A list of the names of handlers
+        """
         return self._get_handler_names()
 
     def _log_controls(self, logtype, logname=None, loglevel=None,
