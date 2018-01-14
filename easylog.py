@@ -182,9 +182,9 @@ class Easylog:
         parameter `stream` is used, this is directly passed to
         `logging.StreamHandler`
 
-        This is a thin wrapper around `logging.StreamHandler`. Though the
-        method refers to console logging, values pass to `stream` will affect
-        the logging output as `logging.StreamHandler`
+        Creates a `logging.StreamHandler` internally to handle console logging.
+        Though the method refers to console logging, values passed to `stream`
+        will affect the logging output as `logging.StreamHandler`
 
         Arguements:
             logname : str (default `None`)
@@ -214,6 +214,47 @@ class Easylog:
     def add_filelogger(self, logpath, appendtime=True, logname=None,
                        loglevel=None, logformat=None, dateformat=None,
                        encoding='utf-8', mode='a', delay=False):
+        """ Add a file logger
+
+        Create a log file `logpath`. Path names are considered. If only a
+        name is provided, will create the log file in current working directory
+
+        Creates a `logging.FileHandler` to handle the file logging. Some of the
+        parameters are simply passed to that class
+
+        Arguements:
+            logpath : str
+                Filename of the log file. Paths can be included. If only a name
+                is provided, will create the log file in current working
+                directory
+            appendtime : bool (default `True`)
+                Should the log's filename have date and time appended. If
+                `True` Then a datetime UTC string is appended with a hyphen
+                i.e. %Y%m%dT%H%M%SZ
+            logname : str (default `None`)
+                The name of the handler. If `None`, a name is automatically
+                assigned as `file`, plus a counter e.g. `file0`
+            loglevel : str (default `None`)
+                The log level of the handler. Lowercase names of `logging` log
+                levels i.e. 'info', 'critical', etc. If `None, it is set to
+                the global log level. See `Easylog.globallevel`
+            logformat : str (default `None`)
+                The log format for the handler. The same format as defined in
+                Python's `logging` module. If `None`, sets internal defaults
+            dateformat : str (default `None`)
+                The date format for the handler. The same as used in the
+                `datetime` module. If `None`, sets internal defaults
+            encoding : str (default 'utf-8')
+                The encoding of the file. Try to stick with `utf-8`. This
+                parameter is the same as `logging.FileHandler`
+            mode : str (default 'a')
+                If set to `a`, file logging is in append mode (recommended).
+                This parameter is the same as `logging.FileHandler`
+            delay : bool (default `False`)
+                Delay the opening and writing of the file. The default `False`
+                is recommended for most cases. This parameter is the same as
+                `logging.FileHandler`
+        """
         if appendtime is True:
             logpath = _append_time(logpath)
 
