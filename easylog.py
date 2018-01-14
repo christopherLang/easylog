@@ -2,8 +2,78 @@ import logging
 
 
 class Easylog:
+    """Fast and easy logging with Easylog
+
+    Easylog is a class designed to make logging a lot easier and faster by
+    targeting the most common types of logging (console, file) and setting them
+    up with usable default settings
+
+    Example:
+        Easylog, by default, creates a console logger named console0, and sets
+        the default global logging level to `logging.INFO`::
+
+            >>> import easylog
+            >>> mylogger = easylog.Easylog()
+            >>> mylogger.log_info("This is a test")
+            INFO - This is a test
+
+    Easylog has built-in support for console and file logging, and supports any
+    number of those. This is especially useful for file logging, where you can
+    create a number of different log files for different types of log messages
+    e.g. one log for information, one for errors, and another for debugging
+
+    Console logging was specifically set up for replacing `print` statements,
+    and similar to file logging, can have multiple loggers for varying
+    purposes
+
+    Log levels:
+        Log levels in `Easylog` are the same ones defined in `logging`. They're
+        integers that define the severity of the log message. A logger's log
+        level determines which message they'll receive and process
+
+        Check the README for a detailed description
+
+    Default Settings:
+        Easylog has several built-in default settings to get logging up and
+        running as quickly as possible:
+            - console logging has the following defaults:
+                * Streamed (or prints) to your standard out
+                * Format '%(levelname)s - %(message)s'. All it prints is the
+                  logging level and message
+                * Logging level set to your global logging level
+            - file logging has the following defaults:
+                * Semi-automated file naming with your preferred prefix,
+                  date and time, and file extension '.log'
+                * Format '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+
+        It is possible to change these settings, such as log levels and
+        formats, easily with the appropriate methods
+
+    Attributes:
+        globallevel : int
+            This is the global logging level set during object construction
+    """
     def __init__(self, loggername=None, globallevel='info',
-                 create_console=True, dateformat=None):
+                 create_console=True):
+        """ Easylog constructor
+
+        Creates an instance of `Easylog`
+
+        Arguements:
+            loggername : str
+                The logger's name, used to different the instance under the
+                `logging` hierarchy. If set to `None`, will use the module's
+                name (usually `easylog`)
+            globallevel : str (defaults to 'info')
+                The global logging level. When using the add_*logger methods,
+                you're given the option to change the logger's level. If it
+                is not set, the logger's log level is set to this
+
+                Permitted values: 'critical','error','warning','info','debug'
+            create_console : bool (defaults to True)
+                If true, `Easylog` will create a console logger with default
+                settings
+        """
         self._handlers = list()
         self._loggername = __name__ if loggername is None else loggername
         self._globallevel = _string2loglevel(globallevel)
@@ -21,20 +91,14 @@ class Easylog:
             self.add_consolelogger()
 
     @property
-    def handlers(self):
-        return self._handlers
-
-    @property
     def globallevel(self):
+        """The global logging level
+
+        str: When using the add_*logger methods, you're given the option to
+            change the logger's level. If it is not set, the logger's log level
+            is set to this
+        """
         return self._globallevel
-
-    @property
-    def logger(self):
-        return self._logger
-
-    @property
-    def dateformats(self):
-        return self._dateformats
 
     def _log_controls(self, logtype, logname=None, loglevel=None,
                       logformat=None, dateformat=None):
