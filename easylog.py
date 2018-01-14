@@ -1,4 +1,6 @@
 import logging
+import os
+import datetime as dt
 
 
 class Easylog:
@@ -64,7 +66,7 @@ class Easylog:
                 * Format '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 
         It is possible to change these settings, such as log levels and
-        formats, easily with the appropriate methods
+        formats easily with the appropriate methods
 
     Attributes:
         globallevel : int
@@ -166,9 +168,12 @@ class Easylog:
 
         self._add_logger(log_handler, log_controls)
 
-    def add_filelogger(self, logpath, logname=None, loglevel=None,
-                       logformat=None, dateformat=None, encoding='utf-8',
-                       mode='a', delay=False):
+    def add_filelogger(self, logpath, appendtime=True, logname=None,
+                       loglevel=None, logformat=None, dateformat=None,
+                       encoding='utf-8', mode='a', delay=False):
+        if appendtime is True:
+            logpath = _append_time(logpath)
+
         log_controls = self._log_controls('console', logname, loglevel,
                                           logformat, dateformat)
         log_handler = logging.FileHandler(logpath, mode, encoding, delay)
@@ -259,6 +264,27 @@ def _logger_record(handler, name, loggertype, loglevel, dateformat):
                   'loglevel': loglevel, 'dateformat': dateformat}
 
         return record
+
+
+def _filename_splitter(thepath):
+    result = list()
+    result.append(os.path.dirname(thepath))
+    result.append(os.path.splitext(os.path.basename(thepath))[0])
+    result.append(os.path.splitext(os.path.basename(thepath))[1])
+
+    return tuple(result)
+
+
+def _append_time(thepath):
+    path_split = _filename_splitter(thepath)
+    str_time = dt.datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')
+    filename = path_split[1]
+    filename += "-" + str_time
+    filename += path_split[2]
+
+    newpath = os.path.join(path_split[0], filename)
+
+    return newpath
 
 
 class Error(Exception):
