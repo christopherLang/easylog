@@ -109,6 +109,8 @@ class Easylog:
         if create_console is True:
             self.add_consolelogger()
 
+        self._handlernames = self._get_handler_names()
+
     @property
     def globallevel(self):
         """The global logging level
@@ -119,13 +121,21 @@ class Easylog:
         """
         return self._globallevel
 
+    @property
+    def handlernames(self):
+        return self._handlernames
+
+    @handlernames.getter
+    def handlernames(self):
+        return self._get_handler_names()
+
     def _log_controls(self, logtype, logname=None, loglevel=None,
                       logformat=None, dateformat=None):
         if logname is None:
             logname = logtype + str(self._namecounters[logtype])
             self._namecounters[logtype] += 1
         else:
-            if logname in self.handler_names():
+            if logname in self._get_handler_names():
                 raise ValueError("Log name {0} already in use".format(logname))
 
         if loglevel is None:
@@ -202,7 +212,7 @@ class Easylog:
                 fmt = logging.Formatter(fmt, dateformat)
                 handler_records['handler'].setFormatter(fmt)
 
-    def handler_names(self):
+    def _get_handler_names(self):
         result = [a_logger['name'] for a_logger in self._handlers]
 
         return result
