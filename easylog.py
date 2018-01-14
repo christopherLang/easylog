@@ -4,27 +4,27 @@ import logging
 class Easylog:
     """Fast and easy logging with Easylog
 
-    Easylog is a class designed to make logging a lot easier and faster by
-    targeting the most common types of logging (console, file) and setting them
-    up with usable default settings
-
-    Example:
-        Easylog, by default, creates a console logger named console0, and sets
-        the default global logging level to `logging.INFO`::
-
-            >>> import easylog
-            >>> mylogger = easylog.Easylog()
-            >>> mylogger.log_info("This is a test")
-            INFO - This is a test
+    The `Easylog` is a class designed to make logging a lot easier and faster
+    by targeting the most common types of logging (console, file) and setting
+    them up with usable default settings. `Easylog` is essentially a simplified
+    wrapper around Python's `logging` module
 
     Easylog has built-in support for console and file logging, and supports any
     number of those. This is especially useful for file logging, where you can
     create a number of different log files for different types of log messages
     e.g. one log for information, one for errors, and another for debugging
 
-    Console logging was specifically set up for replacing `print` statements,
-    and similar to file logging, can have multiple loggers for varying
-    purposes
+    Console logging is specifically set up for replacing `print` statements,
+    and similar to file logging, can have multiple loggers for varying purposes
+
+    Example:
+        Easylog, by default, creates a console logger named console0, and sets
+        the default global logging level to 'info'::
+
+            >>> import easylog
+            >>> mylogger = easylog.Easylog()
+            >>> mylogger.log_info("This is a test")
+            INFO - This is a test
 
     Log levels:
         Log levels in `Easylog` are the same ones defined in `logging`. They're
