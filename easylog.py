@@ -97,8 +97,9 @@ class Easylog:
         self._loggername = __name__ if loggername is None else loggername
         self._globallevel = _string2loglevel(globallevel)
         self._filecounter = 0
-        self._namecounters = {'file': 0, 'console': 0}
+        self._namecounters = {'file': 0, 'console': 0, 'stream': 0}
         self._dateformats = {'file': "%Y-%m-%dT%H:%M:%S",
+                             'stream': "%Y-%m-%dT%H:%M:%S",
                              'console': "%I:%M:%S %p"}
         self._lognames = list()
 
@@ -174,17 +175,20 @@ class Easylog:
 
         self._handlers.append(log_rec)
 
+    def add_streamlogger(self, stream, logname=None, loglevel=None,
+                         logformat=None, dateformat=None):
+        log_controls = self._log_controls('stream', logname, loglevel,
+                                          logformat, dateformat)
+        log_handler = logging.StreamHandler(stream=stream)
+
+        self._add_logger(log_handler, log_controls)
+
     def add_consolelogger(self, logname=None, loglevel=None, logformat=None,
-                          stream=None, dateformat=None):
+                          dateformat=None):
         """ Add a console logger
 
-        Print log statements in console, when using default settings. If
-        parameter `stream` is used, this is directly passed to
-        `logging.StreamHandler`
-
-        Creates a `logging.StreamHandler` internally to handle console logging.
-        Though the method refers to console logging, values passed to `stream`
-        will affect the logging output as `logging.StreamHandler`
+        Prints log statements to console. Creates a `logging.StreamHandler`
+        internally to handle console logging
 
         Arguements:
             logname : str (default `None`)
@@ -207,7 +211,7 @@ class Easylog:
         """
         log_controls = self._log_controls('console', logname, loglevel,
                                           logformat, dateformat)
-        log_handler = logging.StreamHandler(stream=stream)
+        log_handler = logging.StreamHandler(stream=None)
 
         self._add_logger(log_handler, log_controls)
 
@@ -396,6 +400,8 @@ def _default_log_format(handlertype):
     if handlertype == 'console':
         handler_format = '%(levelname)s - %(message)s'
     elif handlertype == 'file':
+        handler_format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    elif handlertype == 'stream':
         handler_format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     elif handlertype == 'module':
         handler_format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
