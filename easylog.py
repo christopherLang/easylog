@@ -258,7 +258,7 @@ class Easylog:
         if appendtime is True:
             logpath = _append_time(logpath)
 
-        log_controls = self._log_controls('console', logname, loglevel,
+        log_controls = self._log_controls('file', logname, loglevel,
                                           logformat, dateformat)
         log_handler = logging.FileHandler(logpath, mode, encoding, delay)
 
