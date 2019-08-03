@@ -72,6 +72,7 @@ class Easylog:
         globallevel : int
             This is the global logging level set during object construction
     """
+
     def __init__(self, loggername=None, globallevel='info',
                  create_console=True):
         """ Easylog constructor
@@ -112,7 +113,7 @@ class Easylog:
 
         self._handlernames = self._get_handler_names()
 
-        self._logfile = None
+        self._logfile = list()
 
     @property
     def logfile(self):
@@ -272,8 +273,8 @@ class Easylog:
                                           logformat, dateformat)
         log_handler = logging.FileHandler(logpath, mode, encoding, delay)
 
-        if self._logfile is None:
-            self._logfile = {'logname': log_controls['logname']}
+        self._logfile.append({'logname': log_controls['logname'],
+                              'filename': logpath})
 
         self._add_logger(log_handler, log_controls)
 
