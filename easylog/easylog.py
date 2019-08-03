@@ -112,6 +112,12 @@ class Easylog:
 
         self._handlernames = self._get_handler_names()
 
+        self._logfile = None
+
+    @property
+    def logfile(self):
+        return self._logfile
+
     @property
     def globallevel(self):
         """The global logging level
@@ -265,6 +271,9 @@ class Easylog:
         log_controls = self._log_controls('file', logname, loglevel,
                                           logformat, dateformat)
         log_handler = logging.FileHandler(logpath, mode, encoding, delay)
+
+        if self._logfile is None:
+            self._logfile = {'logname': log_controls['logname']}
 
         self._add_logger(log_handler, log_controls)
 
