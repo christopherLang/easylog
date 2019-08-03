@@ -1,1 +1,1 @@
-from easylog import Easylog
+from easylog.easylog import Easylog
