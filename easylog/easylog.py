@@ -141,6 +141,10 @@ class Easylog:
         """
         return self._get_handler_names()
 
+    def close(self):
+        for a_handler in self._handlers:
+            a_handler['handler'].close()
+
     def _log_controls(self, logtype, logname=None, loglevel=None,
                       logformat=None, dateformat=None):
         if logname is None:
